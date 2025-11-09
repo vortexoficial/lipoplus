@@ -1,123 +1,751 @@
+/* ======================================= */
+/* 0. CONFIGURAÇÃO GERAL E VARIÁVEIS       */
+/* ======================================= */
+
+:root {
+    --color-primary: #FF6600;
+    --color-dark: #000000;
+    --color-dark-accent: #000000;
+    --color-light: #FFFFFF;
+    
+    --color-text-dark-bg: #e0e0e0;
+    --color-text-light-bg: #121212;
+    --color-text-light-p: #aaaaaa;
+    --color-text-light-h: #FFFFFF;
+
+    --font-primary: 'Outfit', sans-serif;
+    --transition-speed: 0.3s ease;
+
+    /* Cores do Loader (do site de referência) */
+    --gold: #FF6600; 
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #000;
-  color: #fff;
-  text-align: center;
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    font-weight: 300;
+    background-color: var(--color-dark);
+    color: var(--color-text-dark-bg);
 }
 
-.hero {
-  background: url('img/topo1.jpg') no-repeat center center;
-  background-size: cover;
-  padding: 520px 20px 40px;
-  position: relative;
-}
-
-/* NOVO BLOCO: Centraliza logo e ícones à direita */
-.logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 258px;
-  left: 63%;
-  transform: translateX(-50%);
-}
-
-.logo {
-  max-width: 200px; /* Aumenta a logo no desktop */
-  margin: 0 auto 0px;
-  transform: none;
-}
-
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.social-icons img {
-  width: 20px;
-  height: 20px;
-  opacity: 0.8;
-}
-
-.arrow {
-  margin-top: 30px;
-  font-size: 14px;
-  color: #bbb;
-}
-
-.banners {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  padding: 0 20px 40px;
-}
-
-.banners img {
-  width: 100%;
-  max-width: 600px;
-  border-radius: 12px;
-}
-
-footer {
-  font-size: 12px;
-  color: #888;
-  padding: 40px 20px;
-}
-
-footer a {
-  color: #888;
-  text-decoration: none;
-  margin: 0 5px;
-}
-
-/* MOBILE: Centraliza logo e ícones */
-@media (max-width: 600px) {
-  .hero {
-    background: url('img/topo2.jpg') no-repeat center center;
-    background-size: cover;
-    padding: 397px 10px 30px;
-  }
-
-  .banners img {
+img {
     max-width: 100%;
-  }
+    height: auto;
+    display: block;
+}
 
-  .logo-container {
-    position: static;
-    transform: none;
-    
-    margin: 20px auto;
-  }
+/* ======== LOADER (DO SITE DE REFERÊNCIA) ======== */
+.loader-wrap{
+  position:fixed; inset:0; z-index:10000;
+  display:grid; place-items:center;
+  background:var(--color-dark); /* Fundo escuro */
+  opacity:1; transition:opacity .4s ease, visibility .4s ease;
+  visibility:visible;
+}
+.loader-wrap.fade-out{opacity:0; pointer-events:none; visibility:hidden}
+.loader-inner{
+  text-align:center; 
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loader-logo {
+    /* Estilo para o logo em texto */
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    animation:fadeIn .8s ease-out forwards;
+}
+.loader-bar{
+  position:relative; width:150px; height:2px; margin:8px auto 0;
+  border-radius:999px; background:rgba(255,255,255,.15); overflow:hidden;
+}
+.loader-fill{
+  position:absolute; inset:0; background:var(--gold);
+  transform-origin:left; transform:scaleX(0); animation:fillLtoR 2s ease-in-out forwards;
+}
+.loader-text{margin-top:10px; color:rgba(255,255,255,.85); animation:fadeIn .8s ease-out forwards}
+@keyframes fillLtoR{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:translateY(0)}}
+/* ======== FIM DO LOADER ======== */
 
-  .logo {
-    max-width: 200px; /* ou mantenha 200px */
+
+/* ======================================= */
+/* 1. COMPONENTES REUTILIZÁVEIS            */
+/* ======================================= */
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.section-padding {
+    padding: 3rem 0;
+}
+
+/* Animação */
+.section-padding {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s var(--transition-speed), transform 0.6s var(--transition-speed);
+}
+.section-padding.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.section-light {
+    background-color: var(--color-light);
+    color: var(--color-text-light-bg);
+}
+
+.bg-dark-accent {
+    background-color: var(--color-dark-accent);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: var(--color-text-light-h);
+}
+.section-light .section-title {
+    color: var(--color-text-light-bg);
+}
+
+/* === ATUALIZADO (para o FAQ) === */
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-light-p);
+    line-height: 1.7;
+    max-width: 750px;
+    margin: 0 auto 2.5rem; /* 40px */
+}
+
+.section-subtitle-light {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #444;
+    margin-bottom: 2rem;
+}
+
+.section-text {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-  }
-
-
-  .social-icons {
-    justify-content: center;
-  }
+    color: var(--color-text-light-p);
+    font-weight: 300;
+}
+.section-light .section-text {
+    color: #555;
 }
 
-.banners img {
-  transition: filter 0.3s ease, transform 0.3s ease;
+.mb-2-5 {
+    margin-bottom: 2.5rem;
+}
+
+/* === Início do Bloco do Botão === */
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 15px;
+    margin-top: 1.5rem;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 102, 0, 0.5);
+}
+
+/* === ATUALIZADO: Efeito Glare (Feixe de Luz) === */
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; 
+    width: 75%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.521) 50%, /* Brilho levemente mais intenso */
+        transparent 100%
+    );
+    transform: skewX(-25deg); 
+    
+    /* === ATUALIZADO: Animação mais rápida e opacidade maior === */
+    animation: subtle-glare 3.5s linear infinite; /* 3.5s (um pouco mais rápido) */
+    opacity: 0.7; /* Opacidade base maior para ser mais visível */
+}
+
+/* === ATUALIZADO: Keyframes com maior opacidade === */
+@keyframes subtle-glare {
+    0% {
+        left: -100%;
+        opacity: 0.4; /* Começa mais notável */
+    }
+    25% { 
+        opacity: 0.7; /* Pico de opacidade maior */
+    }
+    50% {
+        left: 100%;
+        opacity: 0.4; /* Desaparece mais notável */
+    }
+    75% { 
+        left: -100%;
+        opacity: 0;
+    }
+    100% {
+        left: -100%;
+        opacity: 0.4; /* Reinicia o ciclo */
+    }
+}
+
+
+.cta-button:hover::before {
+    /* Ao hover, o brilho passa mais rápido e forte, parando o loop */
+    animation: none; /* Desativa a animação em loop */
+    left: 100%; /* Inicia a transição do hover */
+    transition: left 0.8s ease; /* Adiciona a transição de volta para o hover */
+    opacity: 1; /* Aumenta a opacidade para o hover */
+}
+/* === Fim do Bloco do Botão === */
+/* ======================================= */
+/* 2. HEADER E FOOTER                      */
+/* ======================================= */
+
+.site-footer {
+    padding: 2.5rem 0;
+    background-color: var(--color-dark-accent);
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #333;
+}
+
+.site-footer p {
+    margin-bottom: 0.5rem;
+}
+
+.site-footer .disclaimer {
+    font-size: 0.8rem;
+    color: #555;
+    max-width: 800px;
+    margin: 1rem auto 0;
+}
+
+/* ======================================= */
+/* 3. SEÇÃO HERO (#hero) - LAYOUT MOBILE   */
+/* ======================================= */
+
+#hero {
+    padding: 0; 
+    background-color: var(--color-dark); /* Fundo escuro por padrão */
+    overflow: hidden; 
+}
+
+/* Layout mobile */
+.hero-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-image-wrapper {
+    order: 1;
+}
+
+.hero-main-image {
+    width: 100vw;
+    margin: 0 calc(50% - 50vw);
+    max-height: 580px;
+    object-fit: cover;
+    margin-bottom: -250px;
+}
+
+.hero-content {
+    order: 2;
+    text-align: center;
+    padding: 1% 0; 
+    position: relative;
+    z-index: 2;
+    background-color: transparent; 
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#hero .container {
+    width: 100%;
+    padding: 0;
+}
+
+#hero .hero-content .container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.hero-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light-h); /* Cor de texto clara para fundo escuro */
+    line-height: 2rem;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 0rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--color-text-dark-bg); /* Cor de texto clara */
+    font-weight: 400;
+     line-height: 1.5rem;
+}
+
+/* ======================================= */
+/* 4. SEÇÃO SOLUÇÃO (#solucao)             */
+/* ======================================= */
+
+/* === ATUALIZADO: Remove padding top no mobile === */
+#solucao.section-padding {
+    padding-top: 0;
+    padding-bottom: 3rem; /* Mantém o padding inferior original */
+}
+
+.solution-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.solution-image img {
+    /* Estilos originais */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    
+    /* === ATUALIZADO: Imagem full-width no mobile === */
+    width: 100vw;
+    margin: 0 calc(50% - 50vw); /* Técnica para "escapar" do container */
+    max-width: none; /* Remove a restrição de max-width */
+    border-radius: 0; /* Remove bordas para ficar edge-to-edge */
+}
+
+.benefits-stacked-list {
+    margin-top: 1.5rem;
+}
+
+.benefit-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.2rem 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.benefit-icon {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.benefit-title {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-light);
+}
+
+.benefit-description {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-text-light-p);
+    margin-top: 0.3rem;
+    padding-left: calc(1.5rem + 1rem);
+}
+
+/* ======================================= */
+/* 5. SEÇÃO AUTORIDADE (#autoridade)       */
+/* ======================================= */
+
+.authority-grid {
+    display: flex;
+    flex-direction: column; 
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.authority-item {
+    padding: 1.5rem;
+   
+    border-radius: 10px;
+    background: #121212; /* Um pouco mais claro que o fundo */
+    
+}
+
+/* === NOVO: Estilo para ícones SVG === */
+.authority-icon {
+    width: 60px; /* Tamanho do ícone */
+    height: 60px;
+    margin: 0 auto 1rem;
+    fill: var(--color-primary); /* Cor do ícone */
+}
+
+.authority-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+.authority-item p {
+    color: var(--color-text-light-p);
+    font-weight: 300;
+}
+
+/* ======================================= */
+/* 6. SEÇÃO DEPOIMENTOS (#depoimentos)     */
+/* ======================================= */
+
+.testimonial-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.testimonial-item {
+    background-color: var(--color-dark-accent);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0, 0.2);
+}
+
+.testimonial-item blockquote {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.testimonial-item cite {
+    font-weight: 700;
+    color: var(--color-light);
+}
+
+/* ======================================= */
+/* 7. SEÇÃO OFERTA (#oferta)               */
+/* ======================================= */
+
+.pricing-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem; 
+    margin: 3rem auto 0;
+    max-width: 900px;
+}
+
+.price-box img {
+    width: 100%;
+    height: auto;
+   
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.price-box img:hover {
+    transform: translateY(-5px);
+}
+
+.urgency-note {
+    margin-top: 3rem;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #333;
+}
+.urgency-note strong {
+    font-weight: 700;
+    color: #000;
+}
+
+.safe-seals {
+    margin: 2rem auto 0;
+    max-width: 300px;
+}
+
+/* ======================================= */
+/* 3.1 SETA HERO (ESTÁTICA / MOBILE)       */
+/* ======================================= */
+
+.hero-arrow {
+    display: block; 
+    margin: 50px auto 0; /* 20px de espaço acima, centralizado */
+    width: 35px;
+    height: 40px;
+}
+
+.hero-arrow path {
+    fill: none;
+    stroke: var(--color-light); /* Cor branca (já estava certo) */
+    stroke-width: 1.8;          /* Espessura da linha (ajuste se quiser) */
+    stroke-linecap: round;    /* Bordas arredondadas (como na imagem) */
+}
+
+/* ======================================= */
+/* 8. NOVA SEÇÃO FAQ (MOBILE-FIRST)        */
+/* ======================================= */
+#faq {
+    background-color: var(--color-dark);
+}
+
+.faq-accordion{
+  max-width: 850px;
+  margin: 2.5rem auto 0; /* 40px auto 0 */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.faq-item{
+  background: #121212; /* Fundo do item */
+  border: 1px solid #333; /* Borda sutil */
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color .3s ease;
+}
+.faq-item.active{
+  border-color: var(--color-primary); /* Borda laranja ao ativar */
+}
+.faq-question{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem; /* 20px */
   cursor: pointer;
+  font-size: 1.05rem; /* Mobile */
+  font-weight: 700;
+  color: var(--color-light);
+}
+.faq-icon{
+  width: 24px;
+  height: 24px;
+  fill: var(--color-primary); /* Laranja */
+  transition: transform .3s ease;
+  flex-shrink: 0; 
+}
+.faq-item.active .faq-icon{
+  transform: rotate(45deg);
+}
+.faq-answer{
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease-out;
+}
+.faq-answer p{
+  font-size: 1rem;
+  color: var(--color-text-light-p); /* Cinza claro */
+  line-height: 1.8;
+  border-top: 1px solid #333;
+  padding: 1.25rem; /* 20px */
+  margin: 0;
+}
+.support-button {
+    margin: 2.5rem auto 0; /* 40px auto 0 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%; /* Ocupa a largura no mobile */
+}
+.support-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
 }
 
-.banners img:hover {
-  filter: brightness(1.2);
-  transform: scale(1.05);
+
+/* ======================================= */
+/* 9. MEDIA QUERIES (DESKTOP)              */
+/* ======================================= */
+
+@media (min-width: 900px) {
+    /* ESCONDE A SETA NO DESKTOP (DEVE PERMANECER) */
+    .hero-arrow {
+        display: none;
+    }
+    body {
+        font-weight: 300;
+    }
+
+    .section-padding {
+        padding: 5rem 0; /* Isso reseta o padding-top: 0 do mobile */
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+    }
+
+    /* === ATUALIZADO (para o FAQ) === */
+    .section-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 3.75rem; /* 60px */
+    }
+
+   /* === LAYOUT DESKTOP (IMAGEM DE FUNDO COM CONTEÚDO À ESQUERDA) === */
+    #hero {
+        padding: 5rem 0;
+        display: flex;
+        align-items: center;
+        min-height: 90vh;
+        position: relative;
+        z-index: 1;
+        /* IMAGEM DO PRODUTO AQUI */
+        background-image: url('img/bg1.png'); /* ATUALIZE COM O CAMINHO DA IMAGEM DO SEU PRODUTO */
+        
+        /* ATUALIZADO ABAIXO: */
+        background-size: cover;             /* Faz a imagem cobrir todo o fundo */
+        background-repeat: no-repeat;
+        background-position: center center; /* Centraliza a imagem enquanto ela cobre */
+        
+        background-color: var(--color-dark); /* Fundo escuro */
+        overflow: visible; 
+    }
+
+  
+    
+    #hero .container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        /* Usar grid para alinhar o conteúdo à esquerda */
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Duas colunas iguais */
+        align-items: center;
+        gap: 3rem; /* Espaçamento entre as "colunas" invisíveis */
+    }
+
+    .hero-grid {
+        display: block; 
+    }
+
+    .hero-image-wrapper {
+        display: none; /* Esconde a imagem <img> do mobile no desktop */
+    }
+
+    .hero-content {
+        order: 1; /* Garante que o conteúdo fique na primeira coluna (esquerda) */
+        text-align: left; /* Alinha o texto à esquerda */
+        padding: 0;
+        position: static; 
+        background-color: transparent; /* Fundo transparente */
+        max-width: 100%; /* Permite ocupar a largura total da coluna */
+    }
+    
+    #hero .hero-content .container {
+        width: 100%;
+        max-width: none;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        color: var(--color-text-light-h);
+        line-height: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        margin-left: 0;
+        max-width: 600px;
+        color: var(--color-text-dark-bg);
+    }
+    /* === FIM LAYOUT DESKTOP === */
+
+
+    /* Grid da Solução (Imagem ao lado do texto) */
+    .solution-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    /* === ATUALIZADO: Reseta a imagem da solução no desktop === */
+    .solution-image img {
+        margin: 0; /* Reseta a margem do mobile */
+        width: 100%; /* Reseta o 100vw */
+        max-width: 100%; /* Reseta o max-width: none */
+        border-radius: 10px; /* Reaplica a borda arredondada */
+    }
+    
+    /* Grid da Autoridade (Lado a lado) */
+    .authority-grid {
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 2rem;
+    }
+
+    /* === NOVO: Estilos Desktop para FAQ === */
+    .faq-accordion {
+        margin-top: 3.75rem; /* 60px */
+    }
+    .faq-question {
+        font-size: 1.2rem;
+        padding: 1.5rem 1.875rem; /* 25px 30px */
+    }
+    .faq-answer p {
+        font-size: 1.1rem;
+        padding: 1.25rem 1.875rem 1.875rem 1.875rem; /* 20px 30px 30px 30px */
+    }
+    .support-button {
+        width: auto; /* Tamanho automático no desktop */
+    }
+    /* === FIM Estilos Desktop FAQ === */
+
+
+    /* Grid dos Depoimentos (Lado a lado) */
+    .testimonial-grid {
+        flex-direction: row;
+        gap: 2rem;
+    }
+
+    .pricing-container {
+        gap: 2rem; 
+    }
 }
