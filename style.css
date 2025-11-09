@@ -379,11 +379,13 @@ img {
     text-align: left;
 }
 
+/* === ATUALIZADO: Estilo do ícone SVG === */
 .benefit-icon {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
-    font-size: 1.5rem;
-    color: var(--color-primary);
+    width: 28px;
+    height: 28px;
+    fill: var(--color-primary);
 }
 
 .benefit-title {
@@ -401,7 +403,7 @@ img {
     font-weight: 300;
     color: var(--color-text-light-p);
     margin-top: 0.3rem;
-    padding-left: calc(1.5rem + 1rem);
+    padding-left: calc(28px + 1rem); /* Ajustado para o novo tamanho do ícone */
 }
 
 /* ======================================= */
@@ -443,34 +445,83 @@ img {
 }
 
 /* ======================================= */
-/* 6. SEÇÃO DEPOIMENTOS (#depoimentos)     */
+/* 6. SEÇÃO DEPOIMENTOS (ESTILO GOOGLE)    */
 /* ======================================= */
 
-.testimonial-grid {
+.testimonial-grid-google {
+    display: grid;
+    /* Cria colunas responsivas: 
+       - Mínimo de 300px
+       - Máximo de 1fr (ocupa espaço igual)
+       - O 'auto-fit' faz com que elas se ajustem
+    */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+    margin-top: 3rem;
+}
+
+.testimonial-card {
+    background: #121212; /* Cor de fundo do card */
+    border: 1px solid #333; /* Borda sutil */
+    border-radius: 10px;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 2rem;
 }
 
-.testimonial-item {
-    background-color: var(--color-dark-accent);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0, 0.2);
-}
-
-.testimonial-item blockquote {
-    font-size: 1.1rem;
-    font-style: italic;
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 1rem;
-    font-weight: 400;
 }
 
-.testimonial-item cite {
+.card-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-dark-accent);
+    fill: var(--color-text-light-p);
+    padding: 8px;
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
+}
+
+.card-author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-author-name {
     font-weight: 700;
     color: var(--color-light);
+    font-size: 1rem;
 }
+
+.card-review-time {
+    font-size: 0.85rem;
+    color: var(--color-text-light-p);
+}
+
+.card-stars {
+    display: flex;
+    gap: 4px;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.card-stars svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.card-body p {
+    font-size: 0.95rem;
+    color: var(--color-text-dark-bg);
+    line-height: 1.7;
+}
+
 
 /* ======================================= */
 /* 7. SEÇÃO OFERTA (#oferta)               */
@@ -586,9 +637,11 @@ img {
   padding: 1.25rem; /* 20px */
   margin: 0;
 }
+
+/* === ATUALIZADO: Botão de Suporte === */
 .support-button {
     margin: 2.5rem auto 0; /* 40px auto 0 */
-    display: inline-flex;
+    display: flex; /* MUDADO: de inline-flex para flex */
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -733,17 +786,23 @@ img {
         font-size: 1.1rem;
         padding: 1.25rem 1.875rem 1.875rem 1.875rem; /* 20px 30px 30px 30px */
     }
+    
+    /* === ATUALIZADO: Centraliza o botão no desktop === */
     .support-button {
         width: auto; /* Tamanho automático no desktop */
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-flex; /* Volta para inline-flex para não ocupar a linha toda */
+    }
+    
+    #faq .container {
+        text-align: center; /* Isso ajuda a centralizar o botão */
     }
     /* === FIM Estilos Desktop FAQ === */
 
 
-    /* Grid dos Depoimentos (Lado a lado) */
-    .testimonial-grid {
-        flex-direction: row;
-        gap: 2rem;
-    }
+    /* Grid dos Depoimentos (Lado a lado) - REMOVIDO pois o grid-google já cuida disso */
+    /* .testimonial-grid { ... } */
 
     .pricing-container {
         gap: 2rem; 
